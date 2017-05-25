@@ -12,3 +12,13 @@ RUN /opt/tools/install-git-crypt.sh \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && npm cache clear
+
+# setup user
+ENV USERNAME dev
+
+RUN adduser --disabled-password --gecos '' $USERNAME && \
+    echo $USERNAME:$USERNAME | chpasswd && \
+    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    adduser $USERNAME sudo
+
+USER $USERNAME
